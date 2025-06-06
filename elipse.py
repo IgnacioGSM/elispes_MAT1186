@@ -44,17 +44,3 @@ if __name__ == "__main__":
     # Ejemplo de uso
     elipse1 = Elipse("12.345.678-9")
     elipse2 = Elipse("11.223.344-5")
-
-    print("Ecuación canónica:", elipse1.ecuacion_canonica())
-    print("Ecuación general:", elipse1.ecuacion_general())
-    
-        # Función añadida para detección de colisiones (Fase 3)
-    def to_shapely(self):
-        from shapely.geometry import Point
-        from shapely.affinity import scale
-
-        base = Point(self.h, self.k).buffer(1)
-        if self.orientacio == 'Horizontal':
-            return scale(base, self.a, self.b)
-        else:
-            return scale(base, self.b, self.a)
