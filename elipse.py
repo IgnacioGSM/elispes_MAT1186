@@ -47,3 +47,14 @@ if __name__ == "__main__":
 
     print("Ecuación canónica:", elipse1.ecuacion_canonica())
     print("Ecuación general:", elipse1.ecuacion_general())
+    
+        # Función añadida para detección de colisiones (Fase 3)
+    def to_shapely(self):
+        from shapely.geometry import Point
+        from shapely.affinity import scale
+
+        base = Point(self.h, self.k).buffer(1)
+        if self.orientacio == 'Horizontal':
+            return scale(base, self.a, self.b)
+        else:
+            return scale(base, self.b, self.a)
