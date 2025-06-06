@@ -138,9 +138,14 @@ def detectar_colision(e1: Elipse, e2: Elipse):
     for x, y in zip(x1, y1):    # Recorre los puntos de la elipse 1
         valor = punto_en_elipse(x, y, e2)
         print(f"Valor de la elipse 2 en ({x}, {y}): {valor}")
-        if valor <= 1:  # Dentro de la elipse (incluyendo frontera)
+        if valor < 1:  # Dentro de la elipse (incluyendo frontera)
             dentro = True
         elif valor > 1:  # Fuera de la elipse
+            fuera = True
+
+        elif valor == 1:  # En la frontera de la elipse
+            # Colision si o si
+            dentro = True
             fuera = True
         if dentro and fuera:
             return True  # Hay intersección
