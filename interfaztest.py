@@ -76,6 +76,38 @@ def actualizar_grafico(e1, e2):
     canvas_widget.get_tk_widget().pack(expand=True, fill="both")
 
 # Lógica de comparación y detección de colisiones
+def punto_en_elipse(x, y, elipse: Elipse):
+    # Verifica si un punto (x, y) está dentro o fuera de la elipse
+    # Entrega el valor de la ecuación de la elipse con el punto (x, y), si es menor a 1 está dentro, si es igual a 1 está en la frontera, y si es mayor a 1 está fuera.
+    if elipse.orientacio == 'Horizontal':
+        return ((x - elipse.h) ** 2) / (elipse.a ** 2) + ((y - elipse.k) ** 2) / (elipse.b ** 2)
+    else:
+        return ((x - elipse.h) ** 2) / (elipse.b ** 2) + ((y - elipse.k) ** 2) / (elipse.a ** 2)
+
+def detectar_colision(e1: Elipse, e2: Elipse):
+    # Detecta si dos elipses colisionan.
+    # Primero se obtiene un gran rango de puntos en la elipse 1
+    theta = np.linspace(0, 2 * np.pi, 360)
+    if e1.orientacio == 'Horizontal':
+        x1 = e1.h + e1.a * np.cos(theta)
+        y1 = e1.k + e1.b * np.sin(theta)
+    else:
+        x1 = e1.h + e1.b * np.cos(theta)
+        y1 = e1.k + e1.a * np.sin(theta)
+    # Luego se verifica si hay puntos dentro y fuera de la elipse 2
+    dentro = False
+    fuera = False
+    for x, y in zip(x1, y1):    # Recorre los puntos de la elipse 1
+        valor = punto_en_elipse(x, y, e2)
+        if valor < 1:  # Dentro de la elipse
+            dentro = True
+        elif valor > 1:  # Fuera de la elipse
+            fuera = True
+        if dentro and fuera:
+            return True  # Hay intersección
+
+    return False
+
 def comparar():
     global plot_type
     rut1 = entry_rut1.get()
@@ -86,13 +118,13 @@ def comparar():
         e2 = Elipse(rut2)
         actualizar_grafico(e1, e2)
 
-        colision = e1.to_shapely().intersects(e2.to_shapely())
+        colision = detectar_colision(e1, e2)
 
         resultado = (
             f"[RUT 1: {rut1}]\n{e1.ecuacion_canonica()}\n{e1.ecuacion_general()}\n\n"
             f"[RUT 2: {rut2}]\n{e2.ecuacion_canonica()}\n{e2.ecuacion_general()}\n\n"
         )
-        resultado += "⚠️ Intersección detectada." if colision else "✅ Trayectorias seguras: sin intersección."
+        resultado += "⚠️ Intersección detectada!!" if colision else "✅ Trayectorias seguras: sin intersección."
         text_resultado.insert("0.0", resultado)
 
     except Exception as e:
