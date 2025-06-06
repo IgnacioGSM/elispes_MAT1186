@@ -33,12 +33,22 @@ class Elipse:
             f"((X - {self.h})² / {self.b**2}) + ((Y - {self.k})² / {self.a**2}) = 1"
         
     def ecuacion_general(self):
-        A = self.b**2 if self.orientacio == 'Horizontal' else self.a**2
-        B = self.a**2 if self.orientacio == 'Horizontal' else self.b**2
+        # Ecuación general: A(x-h)^2 + B(y-k)^2 = A*B
+        if self.orientacio == 'Horizontal':
+            A = self.b**2
+            B = self.a**2
+        else:
+            A = self.a**2
+            B = self.b**2
 
-        expr = (
-            f"{A}(x - {self.h})² + {B}(Y - {self.k})² = {A * B}"
-        )
+        # Expande la ecuación: Ax^2 + By^2 + Dx + Ey + F = 0
+        # (x-h)^2 = x^2 - 2hx + h^2
+        # (y-k)^2 = y^2 - 2ky + k^2
+        D = -2 * A * self.h
+        E = -2 * B * self.k
+        F = A * self.h**2 + B * self.k**2 - (A * B)
+
+        expr = f"{A}x² + {B}y² {D:+}x {E:+}y {F:+} = 0"
         return expr
 if __name__ == "__main__":
     # Ejemplo de uso
