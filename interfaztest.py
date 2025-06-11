@@ -164,14 +164,26 @@ def comparar():
         colision = detectar_colision(e1, e2)
 
         resultado = (
-            f"[RUT 1: {rut1}]\n{e1.ecuacion_canonica()}\n{e1.ecuacion_general()}\n\n"
-            f"[RUT 2: {rut2}]\n{e2.ecuacion_canonica()}\n{e2.ecuacion_general()}\n\n"
+            f"[RUT 1: {rut1}]\n"
+            f"Centro: ({e1.h}, {e1.k})\n"
+            f"Semiejes: a = {e1.a}, b = {e1.b}\n"
+            f"Orientación: {e1.orientacio}\n"
+            f"Ecuación canónica: {e1.ecuacion_canonica()}\n"
+            f"Ecuación general: {e1.ecuacion_general()}\n\n"
+            f"[RUT 2: {rut2}]\n"
+            f"Centro: ({e2.h}, {e2.k})\n"
+            f"Semiejes: a = {e2.a}, b = {e2.b}\n"
+            f"Orientación: {e2.orientacio}\n"
+            f"Ecuación canónica: {e2.ecuacion_canonica()}\n"
+            f"Ecuación general: {e2.ecuacion_general()}\n\n"
         )
+
         resultado += "⚠️ Intersección detectada!!" if colision else "✅ Trayectorias seguras: sin intersección."
         text_resultado.insert("0.0", resultado)
 
     except Exception as e:
         messagebox.showerror("Error", str(e))
+
 
 # Cambia entre 2D y 3D
 def cambiar_vista():
